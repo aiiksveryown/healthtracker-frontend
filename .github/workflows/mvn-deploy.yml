@@ -1,0 +1,37 @@
+name: Deploy to Railway
+
+on: [push, pull_request]
+
+jobs:
+
+  package:
+    name: Maven Package (no tests) 
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+      - name: Maven Package
+        run: mvn -B clean package -DskipTests
+              # Create Artifact - Jar Builds 
+      - name: Jar Builds
+        uses: actions/upload-artifact@v3
+        with:
+          name: Jar with Builds
+          path: target/*.jar
+  deploy:
+    name: Railway Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: aiiksveryown/action-railway@v1.0.0
+        name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        with:
+          railway_service_name: healthtracker-frontend
