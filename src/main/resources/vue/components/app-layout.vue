@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- Conditionally render the "Users" and "Activities" links -->
 
-          <ul class="navbar-nav mr-auto" v-if="isLoggedIn">
+          <ul class="navbar-nav mr-auto" >
             <li class="nav-item active">
               <a class="nav-link" href="/users">
                 Users <span class="sr-only">(current)</span>
@@ -21,6 +21,12 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/activities">Activities</a>
+            </li>
+          </ul>
+          <!-- Add logout button -->
+          <ul class="navbar-nav ml-auto" >
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
             </li>
           </ul>
         </div>
@@ -41,8 +47,8 @@
 Vue.component("app-layout", {
   template: "#app-layout",
   data: () => ({
-    isLoggedIn: true
-  }),
+    // isLoggedIn: $javalin.state.user != null
+  })
 });
 </script>
 

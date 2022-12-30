@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.joda.JodaModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import ie.setu.auth.AccessManager.adminUser
 import ie.setu.domain.Admin
+import ie.setu.domain.AdminAuthParams
 import ie.setu.utils.jsonToObject
 import io.javalin.http.Context
 import kong.unirest.HttpResponse
@@ -29,6 +30,24 @@ object ApiService {
             .asJson()
     }
 
+    fun login(ctx: Context) {
+        val path = ctx.path()
+        val url = "$apiUrl$path"
+        // Make http call to api login endpoint and return Admin object
+        val admin = jsonToObject<AdminAuthParams>(ctx.body())
+        val response = Unirest.post(url)
+            .body(admin)
+            .asJson()
+        println(response.status)
+        println(response.body)
+        if (response.status == 200) {
+            println("Login successful")
+            ctx.sessionAttribute("USER_INFO", jsonToObject<Admin>(response.body.toString()))
+        }
+        ctx.status(response.status)
+        ctx.result(mapper.writeValueAsString(response.body.toString()))
+    }
+
     fun get(ctx: Context) {
         val path = ctx.path()
         val queryParams = ctx.queryString()
@@ -43,6 +62,9 @@ object ApiService {
 
     fun post(ctx: Context) {
         val path = ctx.path()
+        if (path == "/api/admins/login") {
+            return login(ctx)
+        }
         val url = "$apiUrl$path"
         val token = ctx.adminUser?.token
         val response: HttpResponse<JsonNode> = Unirest.post(url)
@@ -51,10 +73,6 @@ object ApiService {
             .body(ctx.body())
             .asJson()
         ctx.status(response.status)
-        // Add user to session if request is login and successful
-        if (path == "/api/admins/login") {
-            ctx.sessionAttribute("USER_INFO", jsonToObject<Admin>(response.body.toString()))
-        }
         ctx.result(mapper.writeValueAsString(response.body.toString()))
     }
 

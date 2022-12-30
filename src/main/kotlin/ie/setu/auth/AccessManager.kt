@@ -1,5 +1,7 @@
 package ie.setu.auth
 
+import ie.setu.auth.AccessManager.adminUser
+import ie.setu.auth.AccessManager.refreshAdminInfo
 import ie.setu.utils.*
 import ie.setu.domain.Admin
 import ie.setu.config.Roles
@@ -8,6 +10,7 @@ import ie.setu.service.ApiService
 import io.javalin.http.Context
 import io.javalin.http.Handler
 import io.javalin.security.RouteRole
+import java.util.StringJoiner
 
 object AccessManager {
     private fun Context.refreshAdminInfo() {
@@ -23,6 +26,8 @@ object AccessManager {
         get() = this.sessionAttribute("USER_INFO")
 
         set(userInfo) = this.sessionAttribute("USER_INFO", userInfo)
+
+    fun currentUser(ctx: Context) = ctx.adminUser?.email
 
     fun manage(handler: Handler, ctx: Context, permittedRoles: Set<RouteRole>) {
 //        ctx.sessionAttribute("USER_INFO", null)

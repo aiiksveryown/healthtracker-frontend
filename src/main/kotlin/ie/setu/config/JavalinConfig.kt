@@ -1,13 +1,13 @@
 package ie.setu.config
 
 import ie.setu.auth.*
+import ie.setu.auth.AccessManager.currentUser
 import ie.setu.utils.*
 import ie.setu.service.ApiService
 import ie.setu.config.Roles.*
 
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
-import io.javalin.http.servlet.cacheAndSetSessionAttribute
 import io.javalin.vue.VueComponent
 import org.jetbrains.exposed.sql.Database
 
@@ -17,8 +17,9 @@ class JavalinConfig {
             config.jetty.sessionHandler {Session.sqlSessionHandler("org.postgresql.Driver", dbConnection.url)}
             config.staticFiles.enableWebjars()
             config.accessManager(AccessManager::manage)
+            config.vue.stateFunction = { ctx -> mapOf("currentUser" to currentUser(ctx)) }
         }.apply {
-//            exception(Exception::class.java) { e, _ -> e.printStackTrace() }
+            exception(Exception::class.java) { e, _ -> e.printStackTrace() }
             error(404) { ctx -> ctx.json("404 - Not Found") }
         }.start(getRemoteAssignedPort())
 
@@ -49,13 +50,10 @@ class JavalinConfig {
             get("/activities", VueComponent("<activity-overview></activity-overview>"), ADMIN, MANAGER)
 
             path("/api/*") {
-                get(ApiService::get, ADMIN, MANAGER, UNAUTHENTICATED)
-                path("/admin/login") {
-                    post(ApiService::post, UNAUTHENTICATED)
-                }
-                post(ApiService::post, ADMIN, MANAGER, UNAUTHENTICATED)
-                patch(ApiService::patch, ADMIN, MANAGER)
-                delete(ApiService::delete, ADMIN, MANAGER)
+                get(ApiService::get, UNAUTHENTICATED)
+                post(ApiService::post, UNAUTHENTICATED)
+                patch(ApiService::patch, UNAUTHENTICATED)
+                delete(ApiService::delete, UNAUTHENTICATED)
             }
         }
     }
