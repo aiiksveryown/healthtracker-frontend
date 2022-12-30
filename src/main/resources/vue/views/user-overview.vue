@@ -68,7 +68,7 @@ Vue.component("user-overview", {
   methods: {
     fetchUsers: function () {
       axios.get("/api/users")
-          .then(res => this.users = res.data)
+          .then(res => this.users = JSON.parse(res.data))
           .catch(() => alert("Error while fetching users"));
     },
     deleteUser: function (user, index) {
@@ -79,7 +79,7 @@ Vue.component("user-overview", {
         axios.delete(url)
             .then(response =>
                 //delete from the local state so Vue will reload list automatically
-                this.users.splice(index, 1).push(response.data))
+                this.users.splice(index, 1).push(JSON.parse(response.data)))
             .catch(function (error) {
               console.log(error)
             });
@@ -93,7 +93,7 @@ Vue.component("user-overview", {
             email: this.formData.email
           })
           .then(response => {
-            this.users.push(response.data)
+            this.users.push(JSON.parse(response.data))
             this.hideForm= true;
           })
           .catch(error => {

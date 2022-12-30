@@ -23,7 +23,7 @@ Vue.component("activity-overview", {
   methods: {
     fetchActivities: function () {
       axios.get("/api/activities")
-          .then(res => this.activities = res.data)
+          .then(res => this.activities = JSON.parse(res.data))
           .catch(() => alert("Error while fetching activities"));
     }
   }

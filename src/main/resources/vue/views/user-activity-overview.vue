@@ -21,7 +21,7 @@ Vue.component("user-activity-overview",{
   created() {
     const userId = this.$javalin.pathParams["user-id"];
     axios.get(`/api/users/${userId}/activities`)
-        .then(res => this.activities = res.data)
+        .then(res => this.activities = JSON.parse(res.data))
         .catch(() => alert("Error while fetching activities"));
   }
 });

@@ -70,13 +70,13 @@ Vue.component("user-profile", {
     const userId = this.$javalin.pathParams["user-id"];
     const url = `/api/users/${userId}`
     axios.get(url)
-        .then(res => this.user = res.data)
+        .then(res => this.user = JSON.parse(res.data))
         .catch(error => {
           console.log("No user found for id passed in the path parameter: " + error)
           this.noUserFound = true
         })
     axios.get(url + `/activities`)
-        .then(res => this.activities = res.data)
+        .then(res => this.activities = JSON.parse(res.data))
         .catch(error => {
           console.log("No activities added yet (this is ok): " + error)
         })
@@ -91,7 +91,7 @@ Vue.component("user-profile", {
             email: this.user.email
           })
           .then(response =>
-              this.user.push(response.data))
+              this.user.push(JSON.parse(response.data)))
           .catch(error => {
             console.log(error)
           })

@@ -3,7 +3,7 @@
     <title>HealthTracker</title>
     <meta charset="utf8">
 
-    <script src="/webjars/axios/0.19.2/dist/axios.min.js"></script>
+    <script src="/webjars/axios/1.2.0/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
 
     <!-- bootstrap css-->
@@ -29,16 +29,13 @@
     @routeComponent
 </main>
 <script>
-    this.apiUrl = ""
-    axios.get('/api-url').then(response => {
-        this.apiUrl = response.data.url
-        new Vue({
-            el: "#main-vue",
-            components: {
-                axios: axios.defaults.baseURL = this.apiUrl
-            }
-        });
-    })
+    new Vue({
+        el: "#main-vue",
+        components: {
+            // Javalin will put all your Vue components into this object
+
+        }
+    });
 </script>
 </body>
 </html>
