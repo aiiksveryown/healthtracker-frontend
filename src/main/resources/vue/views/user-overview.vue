@@ -55,7 +55,7 @@
   </app-layout>
 </template>
 <script>
-Vue.component("user-overview", {
+app.component("user-overview", {
   template: "#user-overview",
   data: () => ({
     users: [],

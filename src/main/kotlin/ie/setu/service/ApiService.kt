@@ -30,7 +30,7 @@ object ApiService {
             .asJson()
     }
 
-    fun login(ctx: Context) {
+    private fun login(ctx: Context) {
         val path = ctx.path()
         val url = "$apiUrl$path"
         // Make http call to api login endpoint and return Admin object
@@ -38,8 +38,6 @@ object ApiService {
         val response = Unirest.post(url)
             .body(admin)
             .asJson()
-        println(response.status)
-        println(response.body)
         if (response.status == 200) {
             println("Login successful")
             ctx.sessionAttribute("USER_INFO", jsonToObject<Admin>(response.body.toString()))

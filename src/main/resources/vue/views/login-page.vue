@@ -23,7 +23,7 @@
   </app-layout>
 </template>
 <script>
-Vue.component('login-page',
+app.component('login-page',
     {
       template: "#login-page",
       data: () => ({

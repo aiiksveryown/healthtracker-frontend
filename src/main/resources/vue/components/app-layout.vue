@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- Conditionally render the "Users" and "Activities" links -->
 
-          <ul class="navbar-nav mr-auto" >
+          <ul class="navbar-nav mr-auto" v-if="$javalin.state.currentUser">
             <li class="nav-item active">
               <a class="nav-link" href="/users">
                 Users <span class="sr-only">(current)</span>
@@ -24,7 +24,7 @@
             </li>
           </ul>
           <!-- Add logout button -->
-          <ul class="navbar-nav ml-auto" >
+          <ul class="navbar-nav ml-auto" v-if="$javalin.state.currentUser">
             <li class="nav-item">
               <a class="nav-link" href="/logout">Logout</a>
             </li>
@@ -44,10 +44,10 @@
 </template>
 
 <script>
-Vue.component("app-layout", {
+app.component("app-layout", {
   template: "#app-layout",
   data: () => ({
-    // isLoggedIn: $javalin.state.user != null
+    // isLoggedIn: $javalin.state.currentUser != null
   })
 });
 </script>

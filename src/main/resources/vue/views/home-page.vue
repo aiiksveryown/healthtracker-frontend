@@ -25,7 +25,7 @@
 </template>
 
 <script>
-Vue.component('home-page',
+app.component('home-page',
     {
       template: "#home-page",
       data: () => ({
@@ -35,7 +35,6 @@ Vue.component('home-page',
       created() {
         axios.get("/api/users")
             .then(res => {
-              console.log(JSON.stringify(res));
               this.users = JSON.parse(res.data);
             })
 

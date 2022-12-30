@@ -12,7 +12,7 @@
   </app-layout>
 </template>
 <script>
-Vue.component("activity-overview", {
+app.component("activity-overview", {
   template: "#activity-overview",
   data: () => ({
     activities: [],

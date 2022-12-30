@@ -13,7 +13,7 @@
 </template>
 
 <script>
-Vue.component("user-activity-overview",{
+app.component("user-activity-overview",{
   template: "#user-activity-overview",
   data: () => ({
     activities: [],

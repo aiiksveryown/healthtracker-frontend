@@ -17,6 +17,7 @@ class JavalinConfig {
             config.jetty.sessionHandler {Session.sqlSessionHandler("org.postgresql.Driver", dbConnection.url)}
             config.staticFiles.enableWebjars()
             config.accessManager(AccessManager::manage)
+            config.vue.vueAppName = "app"
             config.vue.stateFunction = { ctx -> mapOf("currentUser" to currentUser(ctx)) }
         }.apply {
             exception(Exception::class.java) { e, _ -> e.printStackTrace() }

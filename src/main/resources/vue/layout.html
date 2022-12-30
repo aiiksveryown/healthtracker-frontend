@@ -4,8 +4,8 @@
     <meta charset="utf8">
 
     <script src="/webjars/axios/1.2.0/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
-<!--    <script src="/webjars/vue/3.2.45/dist/vue.global.prod.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>-->
+    <script src="/webjars/vue/3.2.45/dist/vue.global.prod.js"></script>
 
     <!-- bootstrap css-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -18,6 +18,9 @@
     <!-- font awesome -->
     <script src="https://kit.fontawesome.com/ccc174672d.js" crossorigin="anonymous"></script>
 
+    <script>
+        const app = Vue.createApp({});
+    </script>
     <!-- Javalin’s Vue plugin will scan your /resources/vue folder and put -->
     <!-- all your Vue components into componentRegistration -->
     @componentRegistration
@@ -30,13 +33,14 @@
     @routeComponent
 </main>
 <script>
-    new Vue({
-        el: "#main-vue",
-        components: {
-            // Javalin will put all your Vue components into this object
-
-        }
-    });
+    app.mount("#main-vue");
+    // new Vue({
+    //     el: "#main-vue",
+    //     components: {
+    //         // Javalin will put all your Vue components into this object
+    //
+    //     }
+    // });
 </script>
 </body>
 </html>

@@ -59,7 +59,7 @@
 
 <script>
 
-Vue.component("user-profile", {
+app.component("user-profile", {
   template: "#user-profile",
   data: () => ({
     user: null,
