@@ -1,7 +1,5 @@
 package ie.setu.auth
 
-import ie.setu.auth.AccessManager.adminUser
-import ie.setu.auth.AccessManager.refreshAdminInfo
 import ie.setu.utils.*
 import ie.setu.domain.Admin
 import ie.setu.config.Roles
@@ -10,15 +8,26 @@ import ie.setu.service.ApiService
 import io.javalin.http.Context
 import io.javalin.http.Handler
 import io.javalin.security.RouteRole
-import java.util.StringJoiner
+import org.slf4j.LoggerFactory
 
 object AccessManager {
     private fun Context.refreshAdminInfo() {
         val apiUrl = System.getenv("API_URL") ?: "http://localhost:7001"
         // if it's not a test-related login we refresh the userinfo (but only if it's already set)
-        this.adminUser?.let {
-            val refreshAdmin = ApiService.roleRefresh(this)
-            this.adminUser = jsonToObject(refreshAdmin.body.toString())
+        try {
+            if (this.adminUser != null && this.path() != "/api/admins/login") {
+                val response = ApiService.roleRefresh(this)
+                if (response.status == 200) {
+                    this.sessionAttribute("USER_INFO", jsonToObject<Admin>(response.body.toString()))
+                }
+                else if (response.status == 401) {
+                    LoggerFactory.getLogger("AccessManager").info("User token expired/invalid")
+                    this.sessionAttribute("USER_INFO", null)
+                }
+            }
+        } catch (e: Exception) {
+            LoggerFactory.getLogger("AccessManager").error("Error refreshing admin info", e)
+            this.sessionAttribute("USER_INFO", null)
         }
     }
 

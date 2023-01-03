@@ -1,6 +1,7 @@
 package ie.setu.utils
 
 import com.auth0.jwt.exceptions.JWTVerificationException
+import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import io.javalin.Javalin
 import io.javalin.http.*
 import org.eclipse.jetty.http.HttpStatus
@@ -52,6 +53,16 @@ object ErrorExceptionMapping {
             LOG.warn("HttpResponseException occurred for req -> ${ctx.url()}")
             val error = ErrorResponse(mapOf("body" to listOf(e.message)))
             ctx.json(error).status(e.status)
+        }
+        app.exception(MissingKotlinParameterException::class.java) { e, ctx ->
+            LOG.warn("MissingKotlinParameterException occurred for req -> ${ctx.url()}" + e)
+            val error = ErrorResponse(mapOf("body" to listOf("Internal server error occurred!")))
+            ctx.json(error).status(HttpStatus.INTERNAL_SERVER_ERROR_500)
+        }
+        app.exception(Exception::class.java) { e, ctx ->
+            LOG.error("Exception occurred for req -> ${ctx.url()}", e)
+            val error = ErrorResponse(mapOf("body" to listOf("Internal server error occurred!")))
+            ctx.json(error).status(HttpStatus.INTERNAL_SERVER_ERROR_500)
         }
     }
 }
