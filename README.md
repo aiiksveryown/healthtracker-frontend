@@ -35,14 +35,8 @@ To run the application, you need to have Java 8 installed. You can then run the 
 mvn clean install
 ```
 
-## How to test
-To run the tests, you need to have Java 8 installed. You can then run the tests by running the following command in the root directory of the project:
-```
-mvn test
-```
-
 # License
-This project is licensed under the MIT License - see the LICENSE.md file for details
+This project is licensed under the MIT License
 
 
 
